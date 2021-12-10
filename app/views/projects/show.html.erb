@@ -1,0 +1,74 @@
+<div class="col-12"></div>
+<h1 class="text-center"><%= @project.title %></h1>
+<div class="col-12 d-flex flex-column align-items-center">
+
+  <div class="card w-90 col-lg-10 mx-1 my-2 bg-primary border-success">
+    <div class="media m-2 d-flex ">
+
+      <div class="media-body">
+        <%= @project.user.user_name %>
+        <div class="text-muted small"> Crée le : <%= @project.created_at.strftime('%e %b %Y')%></div>
+      </div>
+      <% if @project.picture.attached? %>
+        <%= image_tag @project.picture,alt:"#{@project.title}", class:"col-lg-3 col-md-12 m-2", style:"height:300px;border-radius:30px;" %>
+      <% else %>
+        <%= image_tag 'default.jpg',alt:"#{@project.title}", class:"col-lg-3 col-md-12 m-2", style:"height:300px;border-radius:30px;"%>
+      <% end %>
+    </div>
+    <div class="card-body bg-primary">
+      <p class="card-text"><%=@project.description %></p><br />
+      <div class="d-flex justify-content-around flex-wrap">
+        <% @project.attachements.each do |attachment|%>
+          <% if attachment.image? %>
+            <%= image_tag attachment, width: "400px", height: "350px", class: "m-2" %>
+          <% elsif attachment.audio? %>
+            <audio controls>
+              <source src="<%= rails_blob_url(attachment) %>" type="<%= attachment.content_type %>">
+            </audio>
+          <% elsif attachment.video? %>
+            <video controls width="480">
+              <source src="<%= rails_blob_url(attachment) %>" type="<%= attachment.content_type %>">
+            </video>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Comments -->
+    <h4 class="card-header text-center">Feats</h4>
+    <div class="card-body border-success">
+      <% if @project.feats.count < 1 %>
+      <p>Aucun feat pour le moment... À toi de jouer !</p>
+      <% end %>
+      <% @project.feats.each do |feat| %>
+      <div class="media pb-1 mb-3">
+
+        <div class="media-body ml-3 border-success">
+          <%= feat.user.user_name %>
+          <p class="my-1"><%= feat.title %></p>
+          <div class="clearfix">
+            <a href="javascript:void(0)" class="float-right text-lightest small">
+              <span class="ion ion-ios-thumbs-down"></span>
+            </a>
+            <a href="javascript:void(0)" class="float-right text-lightest small">
+              <span class="ion ion-ios-thumbs-up mr-2"></span>
+            </a>
+            <span class="float-left text-muted small"><%= feat.created_at.strftime('%e %b %Y')%></span>
+          </div>
+        </div>
+      </div>
+      <% end %>
+    </div>
+
+    <div style="border-top: 1px solid #ecc93c;margin: 20px 0;"></div>
+    <div class="field d-flex flex-column align-items-center justify-content-center">
+      <%= form_for([@project, @feat], class:"bg-primary w-100", :method => "post") do |f| %>
+      <h3 class="mb-3 fw-normal text-center">Apporte ta participation</h3>
+      <div class="form-card-page form-floating d-flex flex-column mt-2">
+        <%= f.text_area :title, placeholder: "Ajoute ton feat"%>
+        <%= submit_tag "Submit", class:'btn btn-secondary m-2' %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>

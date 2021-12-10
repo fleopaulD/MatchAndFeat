@@ -1,0 +1,39 @@
+<%= form_with(model: project, local: true, html: {class: "w-100"}) do |f| %>   
+
+<div class="form-floating mt-2 ">
+  <div class="field mb-2 ">
+    <%= f.label 'Titre' %><br />
+    <%= f.text_field :title, required: true, id:"text_input_for_project" %><br />
+  </div>
+</div>
+
+<div class="form-floating mt-2 ">
+  <div class="field mb-2 ">
+    <%= f.label 'Description' %><br />
+    <%= f.text_area :description, required: true, id:"text_input_for_project" %><br />
+  </div>
+</div>
+
+<div class="form-floating mt-3">
+  <div class="field mb-2"><br />
+    <%= f.label "Image d'illustration de votre projet", class:"mb-2" %><br />
+    <%= f.file_field :picture %><br />
+  </div>
+</div>
+
+<div class="form-floating mt-3">
+  <div class="field mb-2"><br />
+    <%= f.label "Fichiers Joints", class:"mb-2" %><br />
+    <%= f.file_field :attachements, multiple: true %><br />
+  </div>
+</div>
+
+<div class="form-floating mt-2">
+  <div class="field mb-2"><br />
+    <%= f.submit "Créer", class:"btn btn-secondary px-4"%><br />
+  </div>
+</div>
+
+<% end %>
+
+
